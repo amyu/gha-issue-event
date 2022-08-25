@@ -1,0 +1,26 @@
+name: IssueのEditのEventの中身を見たい
+
+on:
+  issue_comment:
+    types: [created]
+  push:
+
+jobs:
+  assign_author:
+    if: startsWith(github.event.comment.body, '/hoge')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - run: |
+          echo $github_json
+        env:
+          github_json: ${{ toJSON(github) }}
+
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(context)
