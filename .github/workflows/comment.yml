@@ -1,0 +1,17 @@
+name: comment hoge
+
+on:
+  pull_request_review_comment:
+    types: [created]
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if comment contains "hoge"
+        if: contains(github.event.comment.body, 'hoge')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo 'fuga'
